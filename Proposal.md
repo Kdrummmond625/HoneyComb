@@ -2,9 +2,11 @@
 Welcome to HoneyComb a blog based app where you can communicate with a group of people going through similar things
 
 ## WireFrames
+![HoneyComb](https://github.com/Kdrummmond625/HoneyComb/assets/150689031/9fd145f3-3194-4ee7-98c8-de4d2abefdb2)
 
 
 ## ERD
+![HoneyComb](https://github.com/Kdrummmond625/HoneyComb/assets/150689031/846e360e-48f4-471b-b897-b003766d9f9e)
 
 
 ## Trello Link
