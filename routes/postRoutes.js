@@ -1,11 +1,17 @@
 import express from 'express'
 const router = express.Router()
 
-import{ getPost, createPost, updatePost, deletePost } from '../controllers/PostController.js'
+import{ getPost, getOnePost, createPost, updatePost, deletePost} from '../controllers/PostController.js'
 import { isLoggedIn } from '../controllers/middleware.js'
+
+//route for the user profile page
+// router.get('/profile', isLoggedIn, getProfile)
 
 //getPost router
 router.get('/myPosts', isLoggedIn, getPost)
+
+//get one post router
+router.get('/myPosts/:id', isLoggedIn, getOnePost)
 
 //createPost router
 router.post('/createPost', isLoggedIn, createPost)

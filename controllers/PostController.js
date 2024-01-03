@@ -16,6 +16,22 @@ const getPost = async (req, res) => {
         });
 };
 
+const getOnePost = async (req, res) => {
+
+    const { username } = req.user; // get username from req.user property
+
+    Post.findOne({ username, _id: req.params.id }) // find a post by this username and post ID
+        .then((foundPost) => {
+            if (!foundPost) {
+                return res.status(404).json({ message: 'Post not found' });
+            }
+            res.json(foundPost); // send the found post as response
+        })
+        .catch((error) => {
+            res.status(400).json({ error: error.message }); // send error response if any
+        });
+}
+
 
 const createPost = async (req, res) => {
     
@@ -61,6 +77,7 @@ const deletePost = async(req, res) => {
 
 export {
     getPost,
+    getOnePost,
     createPost,
     updatePost,
     deletePost
