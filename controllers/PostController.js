@@ -1,28 +1,57 @@
 import { json } from "express";
 import Post from "../models/postSchema.js";
+import router from "../routes/userRouter.js";
+import { isLoggedIn } from "./middleware.js";
 
-const getPost = async(req, res) => {
-    Post.find({}).then((findPosts) => {
-        res.json(findPosts)
-    })
-}
+const getPost = async (req, res) => {
+    
+    const { username } = req.user; // get username from req.user property
 
-const createPost = async(req, res) => {
-    const newPost = req.body
-    Post.create(req.body).then ((newPost) => {
-        res.json(newPost)
-    })
-}
+    Post.find({ username }) // find posts by this username
+        .then((findPosts) => {
+            res.json(findPosts); // send the found posts as response
+        })
+        .catch((error) => {
+            res.status(400).json({ error: error.message }); // send error response if any
+        });
+};
+
+
+const createPost = async (req, res) => {
+    
+    const { username } = req.user; // get username from req.user property
+    req.body.username = username; // set username in req.body
+
+    Post.create(req.body) // create a new post with the request body
+        .then((createdPost) => {
+            res.json(createdPost); // send the created post as response
+        })
+        .catch((error) => {
+            res.status(400).json({ error: error.message }); // send error response if any
+        });
+};
+
 
 const updatePost = async(req, res) => {
-    const id = req.params.id
-    const updateData = req.body
-    Post.findByIdAndUpdate(id, updateData, {new: true}).then((updatePost) => {
-        res.json(updatePost)
-    })
+    const { username } = req.user // get username from req.user property
+    const id = req.params.id // get the post ID from the request parameter
+    const updateData = req.body // data to update
+    updateData.username = username // set username in update data
+
+    Post.findByIdAndUpdate(id, updateData, { new: true}) //update the post
+        .then((updatedPost) => {
+            if (!updatedPost) {
+                return res.status(404).json({ message: 'Post not found'})
+            }
+            res.json(updatedPost) // send the updated post as response
+        })
+        .catch((error) => {
+            res.status(400).json({ error: error.message}) // send error response if any
+        })
 }
 
 const deletePost = async(req, res) => {
+    const { username } = req.user
     const id = req.params.id
     Post.findByIdAndDelete(id).then((deletePost) => {
         res.json(deletePost)
