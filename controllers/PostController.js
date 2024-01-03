@@ -3,6 +3,40 @@ import Post from "../models/postSchema.js";
 import router from "../routes/userRouter.js";
 import { isLoggedIn } from "./middleware.js";
 
+
+const getProfileData = async (req, res) => {
+    try {
+        // Extract the username from the request object, assuming it's set by your authentication middleware
+        const { username } = req.user;
+
+        // Fetch the most recent 5 posts made by the user, sorted by creation time (newest first)
+        // const recentPosts = await Post.find({ username }).limit(5).sort({ createdAt: -1 });
+
+        // Aggregate the number of posts in each category for this user
+        // This MongoDB aggregation operation groups posts by category and counts them
+        const categoryCounts = await Post.aggregate([
+            { $match: { username: username } }, // Filter to only include posts by this user
+            { $group: { _id: "$category", count: { $sum: 1 } } } // Group by category and count
+        ]);
+
+        // Structure the data to send as the response
+        // This includes the username, recent posts, and counts of posts by category
+        const profileData = {
+            username: username,
+            // recentPosts: recentPosts,
+            postCountsByCategory: categoryCounts,
+            // You can add more data here as needed
+        };
+
+        // Send the structured data as a JSON response
+        res.json(profileData);
+    } catch (error) {
+        // If an error occurs, send a 500 server error response with the error message
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// function to getPost
 const getPost = async (req, res) => {
     
     const { username } = req.user; // get username from req.user property
@@ -30,6 +64,17 @@ const getOnePost = async (req, res) => {
         .catch((error) => {
             res.status(400).json({ error: error.message }); // send error response if any
         });
+}
+
+//logic for public feed
+const getPublicFeed = async (req, res) => {
+    try {
+        //fetch only public post
+        const publicPosts = await Post.find({ isPublic: true }).sort({ createdAt: -1 });
+        res.json(publicPosts);
+    } catch (error){
+        res.status(500).json({ error: error.message });
+    }
 }
 
 
@@ -76,8 +121,10 @@ const deletePost = async(req, res) => {
 
 
 export {
+    getProfileData,
     getPost,
     getOnePost,
+    getPublicFeed,
     createPost,
     updatePost,
     deletePost

@@ -59,17 +59,6 @@ const userLogedin = async (req, res) => {
    }
 }
 
-
-//  const createNewUser = async (req, res) => {
-//    try {
-//     const newUser = await User.create(req.body)
-//     res.json(newUser)
-//    } catch (error) {
-//     console.log('Error in createNewUser', error)
-//     res.status(500).json({ message: 'Error creating new user'})
-//    }
-//  }
-
 //  const updateUser = async (req, res) => {
 //     try {
 //        const updatedData = req.body

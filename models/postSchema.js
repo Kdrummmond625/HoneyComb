@@ -8,6 +8,10 @@ const postSchema = mongoose.Schema( {
         required: true,
         enum: ['I Want To Vent', ' I Want To Heal', 'I Won']
     },
+    isPublic: {
+        type: Boolean,
+        default: true
+    },
     content: {type: String, required: true}
 })
 
