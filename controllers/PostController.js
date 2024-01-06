@@ -38,16 +38,33 @@ const getProfileData = async (req, res) => {
 
 // function to getPost
 const getPost = async (req, res) => {
-    
-    const { username } = req.user; // get username from req.user property
+    try {
+        const username = req.user.username
+        const findPosts = await Post.find({ username }).sort({ createdAt: -1 });
+        
+        const categoryCounts = await Post.aggregate([
+            { $match: { isPublic: true}},
+            { $group: { _id: "$category", count: { $sum: 1}}}
+        ])
 
-    Post.find({ username }) // find posts by this username
-        .then((findPosts) => {
-            res.json(findPosts); // send the found posts as response
-        })
-        .catch((error) => {
-            res.status(400).json({ error: error.message }); // send error response if any
-        });
+        const responseData = {
+            posts: findPosts,
+            counts: categoryCounts
+        }
+        res.json(responseData);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+    
+    // const { username } = req.user; // get username from req.user property
+
+    // Post.find({ username }) // find posts by this username
+    //     .then((findPosts) => {
+    //         res.json(findPosts); // send the found posts as response
+    //     })
+    //     .catch((error) => {
+    //         res.status(400).json({ error: error.message }); // send error response if any
+    //     });
 };
 
 const getOnePost = async (req, res) => {
@@ -71,7 +88,20 @@ const getPublicFeed = async (req, res) => {
     try {
         //fetch only public post
         const publicPosts = await Post.find({ isPublic: true }).sort({ createdAt: -1 });
-        res.json(publicPosts);
+
+        // Get counts of posts by category
+        const categoryCounts = await Post.aggregate([
+            { $match: { isPublic: true}},
+            { $group: { _id: "$category", count: { $sum: 1}}}
+        ])
+
+        // Combine the posts and category counts into a single object
+        const responseData = {
+            posts: publicPosts,
+            counts: categoryCounts
+        }
+        res.json(responseData);
+
     } catch (error){
         res.status(500).json({ error: error.message });
     }
