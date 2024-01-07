@@ -8,7 +8,7 @@ dotenv.config();
 const SECRET = process.env.SECRET;
 
 
-
+//get all users
 const getUsers = async (req, res) =>  {
    try {
     const findUsers = await User.find({})
@@ -18,7 +18,7 @@ const getUsers = async (req, res) =>  {
     res.status(500).json({ message: 'Error fetching users'})
    }
 }
-
+//create user
 const userSignup = async (req, res) => {
    try {
       const existingUser = await User.findOne({ username: req.body.username });
@@ -37,7 +37,7 @@ const userSignup = async (req, res) => {
 }
 
 
-
+//login user
 const userLogedin = async (req, res) => {
    try {
       const user = await User.findOne({ username: req.body.username })  

@@ -25,12 +25,6 @@ app.use(express.json())
 app.use(cors()) // add cors header
 app.use(morgan("tiny"))
 app.use (createContext) // create req.context
-// app.use(session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: true}
-// }))
 
 
 app.use('/honeycomb/home', postRoutes)

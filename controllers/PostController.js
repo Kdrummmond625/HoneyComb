@@ -9,9 +9,6 @@ const getProfileData = async (req, res) => {
         // Extract the username from the request object, assuming it's set by your authentication middleware
         const { username } = req.user;
 
-        // Fetch the most recent 5 posts made by the user, sorted by creation time (newest first)
-        // const recentPosts = await Post.find({ username }).limit(5).sort({ createdAt: -1 });
-
         // Aggregate the number of posts in each category for this user
         // This MongoDB aggregation operation groups posts by category and counts them
         const categoryCounts = await Post.aggregate([
@@ -23,9 +20,7 @@ const getProfileData = async (req, res) => {
         // This includes the username, recent posts, and counts of posts by category
         const profileData = {
             username: username,
-            // recentPosts: recentPosts,
             postCountsByCategory: categoryCounts,
-            // You can add more data here as needed
         };
 
         // Send the structured data as a JSON response
@@ -55,16 +50,6 @@ const getPost = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-    
-    // const { username } = req.user; // get username from req.user property
-
-    // Post.find({ username }) // find posts by this username
-    //     .then((findPosts) => {
-    //         res.json(findPosts); // send the found posts as response
-    //     })
-    //     .catch((error) => {
-    //         res.status(400).json({ error: error.message }); // send error response if any
-    //     });
 };
 
 const getOnePost = async (req, res) => {
@@ -141,6 +126,8 @@ const updatePost = async(req, res) => {
         })
 }
 
+//delete post
+
 const deletePost = async(req, res) => {
     const { username } = req.user
     const id = req.params.id
@@ -149,7 +136,7 @@ const deletePost = async(req, res) => {
     })
 }
 
-
+//export functions
 export {
     getProfileData,
     getPost,

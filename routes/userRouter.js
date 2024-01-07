@@ -16,9 +16,6 @@ router.post('/signup', userSignup)
 //Log user in 
 router.post('/login', userLogedin)
 
-//create new user
-// router.post('/signup', createNewUser)
-
 // //update user info
 // router.put('/updateUser/:id', updateUser)
 
@@ -28,6 +25,6 @@ router.delete('/deleteUser/:id', deleteUser)
 
 
 
-
+// export router
 export default router
 
