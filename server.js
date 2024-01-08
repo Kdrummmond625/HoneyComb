@@ -26,9 +26,9 @@ app.use(cors()) // add cors header
 app.use(morgan("tiny"))
 app.use (createContext) // create req.context
 
-app.use('/', (req, res, next) => {
-    res.send('server is running');
-});
+// app.use('/', (req, res, next) => {
+//     res.send('server is running');
+// });
 
 
 
