@@ -26,11 +26,16 @@ app.use(cors()) // add cors header
 app.use(morgan("tiny"))
 app.use (createContext) // create req.context
 
+app.use('/', (req, res, next) => {
+    res.send('server is running');
+});
+
+
 
 app.use('/honeycomb/home', postRoutes)
 app.use('/honeycomb/user', userRoutes)
 
 // port server is listening on
 app.listen(PORT, function() {
-    console.log(`Your listening on localhost:${PORT}`)
+    console.log(`Your listening on http://localhost:${PORT}`)
 })
