@@ -1,4 +1,4 @@
-import e, { json } from 'express'
+import { json } from 'express'
 import User from '../models/userSchema.js'
 
 //get all users

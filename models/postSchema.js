@@ -12,8 +12,9 @@ const postSchema = mongoose.Schema( {
         type: Boolean,
         default: true
     },
-    content: {type: String, required: true}
-})
+    content: {type: String, required: true},
+    commentsCount: {type: Number, required: true, default: 0}
+}, {timestamps: true})
 
 const Post = mongoose.model('Post', postSchema)
 
