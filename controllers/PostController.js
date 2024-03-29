@@ -1,5 +1,6 @@
 import { json } from "express";
 import Post from "../models/postSchema.js";
+import Report from "../models/reportSchema.js";
 import router from "../routes/userRouter.js";
 import { isLoggedIn } from "./middleware.js";
 
@@ -136,6 +137,32 @@ const deletePost = async(req, res) => {
     })
 }
 
+const reportPost = async(req, res) => {
+    console.log(req.user)
+    const { postId } = req.params
+    const { reason, details } = req.body
+    if (!req.user || !req.user._id) {
+        return res.status(403).json({ message: "User not authenticated" });
+    }
+    const reportedBy = req.user._id;
+
+    try { 
+        const newReport = new Report({
+            reportedBy,
+            reportedItem: postId,
+            reportedItemType: 'Post',
+            reason,
+            details,
+        })
+
+        await newReport.save();
+        res.status(201).json({ message: 'Post reported successfully' });
+    } catch (error) {
+        console.error('Error submitting report', error);
+        res.status(500).json({ message: "Error submitting report", details: error.message})
+    }
+}
+
 //export functions
 export {
     getProfileData,
@@ -144,5 +171,6 @@ export {
     getPublicFeed,
     createPost,
     updatePost,
-    deletePost
+    deletePost,
+    reportPost
 }

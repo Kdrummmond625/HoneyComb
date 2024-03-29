@@ -12,6 +12,7 @@ import session from 'express-session'
 // import routes
 import postRoutes from './routes/postRoutes.js'
 import userRoutes from './routes/userRouter.js'
+import adminRoutes from './routes/adminRoutes.js'
 
 
 
@@ -34,6 +35,8 @@ app.use (createContext) // create req.context
 
 app.use('/honeycomb/home', postRoutes)
 app.use('/honeycomb/user', userRoutes)
+app.use('/honeycomb/admin', adminRoutes)
+
 
 // port server is listening on
 app.listen(PORT, function() {

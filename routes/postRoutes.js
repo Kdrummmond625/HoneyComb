@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-import{ getProfileData ,getPost, getOnePost, getPublicFeed, createPost, updatePost, deletePost} from '../controllers/PostController.js'
+import{ getProfileData ,getPost, getOnePost, getPublicFeed, createPost, updatePost, deletePost, reportPost} from '../controllers/PostController.js'
 import { isLoggedIn } from '../controllers/middleware.js'
 
 //route for the user profile page
@@ -22,7 +22,10 @@ router.post('/createPost', isLoggedIn, createPost)
 //updatePost router
 router.put('/updatePost/:id', isLoggedIn, updatePost)
 
-//deltePost router
+//deletePost router
 router.delete('/deletePost/:id', isLoggedIn, deletePost)
+
+// reportPost router
+router.post('/reportPost/:postId', isLoggedIn, reportPost)
 
 export default router
