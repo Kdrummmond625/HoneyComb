@@ -4,6 +4,10 @@ const router = express.Router()
 import{ getProfileData ,getPost, getOnePost, getPublicFeed, createPost, updatePost, deletePost, reportPost} from '../controllers/PostController.js'
 
 import { makeComment, deleteComment, getComments } from '../controllers/commentsController.js'
+
+import { likeComment, unlikeComment, likePost, unlikePost } from '../controllers/likescontroller.js'
+
+
 import { isLoggedIn } from '../controllers/middleware.js'
 
 
@@ -38,7 +42,19 @@ router.get('/post/:postId/comments', isLoggedIn, getComments)
 router.post('/post/:postId/comment', isLoggedIn, makeComment)
 
 // deleteComment router
-router.delete('/comment/:id', isLoggedIn, deleteComment)
+router.delete('/comment/:commentId', isLoggedIn, deleteComment)
+
+// likeComment router
+router.post("/comments/:commentId/like", isLoggedIn, likeComment);
+
+// unlikeComment router
+router.post("/comments/:commentId/unlike", isLoggedIn, unlikeComment);
+
+// likePost router
+router.post("/post/:postId/like", isLoggedIn, likePost);
+
+// unlikePost router
+router.post("/post/:postId/unlike", isLoggedIn, unlikePost);
 
 
 export default router

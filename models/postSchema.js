@@ -13,7 +13,11 @@ const postSchema = mongoose.Schema( {
         default: true
     },
     content: {type: String, required: true},
-    commentsCount: {type: Number, required: true, default: 0}
+    commentsCount: {type: Number, required: true, default: 0},
+    likes: {
+        count: { type: Number, default: 0 },
+        users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+    }
 }, {timestamps: true})
 
 const Post = mongoose.model('Post', postSchema)
